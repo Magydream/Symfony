@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livre d’or des conférences
+{% endblock %}
+
+{% block body %}
+
+	<div class="example-wrapper p-5">
+		<h1 class="py-5">
+			Faîtes-nous un retour !!!
+		</h1>
+		<form action="">
+			<div class="row form-group">
+				<label for="year" class="col-sm-6 col-form-label">Année</label>
+				<div class="col-sm-6">
+					<select type="text" class="form-control" id="year_search" name="year_search">
+						<option></option>
+						{% for year in years %}
+							<option {{ (year == year_search ? 'selected') }}>{{ year }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="row form-group">
+				<label for="city" class="col-sm-6 col-form-label">Ville</label>
+				<div class="col-sm-6">
+					<select type="text" class="form-control" id="city_search" name="city_search">
+						<option></option>
+						{% for city in citys %}
+							<option {{ (city == city_search ? 'selected') }}>{{ city }}</option>
+						{% endfor %}
+					</select>
+					<div class="pb-5">
+						<button class="btn btn-primary" type="submit" >Rechercher</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<form action="">
+			<label for="search_city">Rechercher une ville
+				<input type="search"  id="search_city" name="search_city">
+			</label>
+			<button type="submit">Envoyer</button>
+		</form>
+		<ul class="list-group ">
+        {% for conference in conferences %}
+			<li class="list-group-item list-group-item-action d-flex justify-content-between">{{conference.city ~ ' - ' ~ conference.year}}<a href="{{ path('ficheConference', { id: conference.id }) }}" class="btn btn-primary">Commentaires</a></li>
+        {% endfor %}
+		</ul>
+	</div>
+	<div class="col-12">
+		{% if previous >= 0 %}
+			<a href="{{ path('app_conference', {offset: previous }) }}" class="btn btn-sm btn-primary"><<</a>
+		{% endif %}
+		Il y a {{ conferences|length~' conference'~( conferences|length > 1 ? 's' : '') }}
+		{% if next < conferences|length %}
+			<a href="{{ path('app_conference', {offset: next }) }}" class="btn btn-sm btn-primary">>></a>
+		{% endif %}
+	</div>
+{% endblock %}
